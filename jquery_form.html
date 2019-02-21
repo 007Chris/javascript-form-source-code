@@ -1,0 +1,252 @@
+<head>
+    <title>회원가입</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> 
+    <script>
+       $(document).ready(function(){
+          var form = $("#contact_form");
+
+          var name = $("#name");
+          var nameDetails = $("#nameDetails");
+ 
+          var email = $("#email");
+          var emailDetails = $("#emailDetails");
+        
+          form.submit(function(e){
+              e.preventDefault();
+              if(validateName() && validateEmail() && validatePass() 
+                 && checkPass()  && ageCheck() && hobbyChk() 
+                 && gameChk() && checkGender() && validateMessage()
+                 && setColor()){
+
+                   alert("회원가입을 추카추카!");
+                   $("#contact_form")[0].reset();
+                  return true;
+              }else{
+                  return false;
+              }
+          })
+          function validateName(){
+              var nameCheck =name.val();
+             var getName = RegExp(/^[가-힣]+$/); //이름검사
+              if(!getName.test(nameCheck)){
+                  nameDetails.text("이름을 다시입력하세요");
+                  return false;
+              }else{
+                  nameDetails.text("");
+                  return true;
+              }
+          }
+          function validateEmail(){
+            var a = email.val();
+            var getMail = RegExp(/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/);
+            if(!getMail.test(a)){
+                emailDetails.text("이메일 형식에 맞게 입력해주세요");
+                return false;
+            }else{
+                emailDetails.text("");
+                return true;
+            }
+          }
+          function validatePass(){
+             if($("#pass1").val().length < 4 ){
+                 $('#pass1Details').text('비밀번호는 입력하세요');
+                return false;
+             }else{
+                 $("#pass1Details").text('');
+                 $("#pass2").focus();
+                 return true;
+             }
+          }
+          function checkPass(){
+            if($("#pass1").val() != $('#pass2').val()){
+                $("#pass2Details").text('비밀번호가 틀립니다');
+                return false;
+            }else{
+                $("#pass2Details").text("");
+                return true;
+            }
+          }
+          function ageCheck(){
+              if(isNaN($("#age").val()) || Number($('#age').val()) < 0){
+                  $("#ageError").text("나이는 숫자로만 입력하세요");
+                  $("#age").focus();
+                  return false;
+              }else if(Number($('#age').val()) < 20){
+                  $("#ageError").text('미성년자는 가입불가능합니다');
+                  $("#age").focus();
+                  return false;
+              }else{
+                  $("#ageError").text('');
+                  $('#memo').focus();
+                  return true;
+              }
+          }
+        function hobbyChk(){
+            var hobbyCheck = false;
+
+            for(var i=0;i<$('[name="hobby"]').length;i++){
+                if($('input:checkbox[name="hobby"]').eq(i).is(":checked") == true){
+                    hobbyCheck = true;
+                    break;
+                }
+            }
+            if(!hobbyCheck){
+                $('.hobbyError').text('취미를 체크해주세요');
+                return false;
+            }else{
+                $('.hobbyError').text('');
+                return true;
+            }
+        }
+        function gameChk(){
+            var gameCheck = false;
+            for(var j=0; j<$('#game option').length;j++){ 
+                       if($('#game option').eq(j).is(":selected") == true){
+                           gameCheck = true;
+                       }
+                    }
+                    if(!gameCheck){
+                        $(".gameError").text('게임을 체크해주세요');
+                        return false;
+                    }else{
+                        $('.gameError').text('');
+                        return true;
+                    }
+        }
+          function checkGender(){
+              if($('.gender:checked').length == 0){
+                  $("#genderHelp").text("성별을 체크해주세요");
+                  return false;
+              }else{
+                  $("#genderHelp").text("");
+                  return true;
+              }
+          }
+         function validateMessage(){
+             if($('#memo').val() == ''){
+                 $('#memo').focus();
+                 $('#memoHelp').text('메모가 공백입니다');
+                 return false;
+             }else{
+                 $("#memoHelp").text('');
+                 return true;
+             }
+         }
+         function setColor(){
+             var color = $("#color option:selected").val();
+              if(color == 0){
+                  $('#colorError').text('색깔을 선택해주세요');
+                  return false;
+              }else{
+                  $('body').css('background',color);
+                  $("#colorError").text('');
+                  return true;
+              }
+         }
+       });
+    </script>
+  </head>
+  <style>
+      div{
+          margin:10px;
+      }
+      form{
+          position: relative;
+          border:2px solid black;
+          background-color:skyblue;
+      }
+      .gamemove{
+          margin-bottom:2px;
+          position:relative;
+          bottom:30px;
+      }
+      .gameError{
+          position:relative;
+          bottom:30px;
+      }
+      .hobbyError{
+          position: relative;
+          left:3px;
+      }
+  </style>
+  <body>
+    <div id="container">
+          <h1>크리스의 즐거운 홈페이지</h1>
+          <form action="" method="post" id="contact_form">
+            <div>
+                <lable for="name">이름</lable>
+                <input type="text" id="name" name="name">
+                 <span id="nameDetails"</span>
+            </div>
+            <div>
+                <lable for="email">이메일</lable>
+                <input type="text" id="email" name="email">
+                <span id="emailDetails"></span>
+            </div>
+            <div>
+                <lable for="pass1">패스워드</lable>
+                <input type="password" id="pass1" name="pass1">
+                <span id="pass1Details"></span>
+            </div>
+            <div>
+                 <lable for="pass2">패스워드 확인</lable>
+                 <input type="password" id="pass2" name="pass2">
+                 <span id="pass2Details"></span>
+            </div>
+            <div>
+                  <label for="age">나이</label>
+                  <input type="text" id="age" name="age">
+                  <span id="ageError"></span>
+            </div>
+            <div>
+                <span>당신의 취미(복수)</span>
+                <input type="checkbox" name="hobby" value="여행">여행
+                <input type="checkbox" name="hobby" value="음악감상">음악감상
+                <input type="checkbox" name="hobby" value="영화감상">영화감상
+                <input type="checkbox" name="hobby" value="컴퓨터게임">게임
+                <input type="checkbox" name="hobby" value="기타">기타
+                <span class="hobbyError"></span>               
+            </div>
+            <div>
+                 <span class="gamemove">게임을 고르세요</span>
+                 <select name="game" id="game" size=4 multiple>
+                     <option value="스타크래프트" name = "game">스타크래프트</option>
+                     <option value="레인보우식스" name = "game">레인보우 식스</option>
+                     <option value="디아블로" name = "game">디아블로</option>
+                     <option value="리니지" name = "game">리니지</option>
+                     <option value="포트리스" name = "game">포트리스</option>
+                     <option value="한게임고스톱" name = "game">한게임고스톱</option>
+                 </select>
+                 <span class="gameError"></span>
+            </div>
+            <div>
+                <lable for="gender">성별</lable>
+                <input type="radio" class="gender">남
+                <input type="radio" class="gender">여
+                <span id="genderHelp"></span>
+            </div>
+            <div>
+                 <lable for="message">문의사항</lable>
+                 <textarea id="memo" name="memo"></textarea>
+                 <span id="memoHelp"></span>
+            </div>
+            <div>
+                  <span class="colormove">색깔을 고르세요</span>
+                  <select name="selectColor" id="color" onchange="setColor()">
+                          <option value="0">선택해주세요</option>
+                          <option value="red">빨강</option>
+                          <option value="yellow">노랑</option>
+                          <option value="blue">파랑</option>
+                          <option value="green">녹색</option>
+                          <option value="white">흰색</option>
+                </select>
+                <span id="colorError" class="red"></span>
+            </div>
+            <div>
+                <input type="submit" name="send" value="가입하기">
+                <input type="reset" name="reset" value="리셋">
+            </div>
+          </form>
+    </div>
+  </body>
+  </html>
